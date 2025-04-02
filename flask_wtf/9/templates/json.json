@@ -1,0 +1,22 @@
+{
+  "crew": [
+    {
+      "first_name": "Иван",
+      "last_name": "Петров",
+      "photo": "img/ivan_petrov.png",
+      "specialties": ["Инженер", "Пилот", "Механик"]
+    },
+    {
+      "first_name": "Анна",
+      "last_name": "Сидорова",
+      "photo": "img/anna_sidorova.png",
+      "specialties": ["Биолог", "Медик"]
+    },
+    {
+      "first_name": "Дмитрий",
+      "last_name": "Козлов",
+      "photo": "img/dmitry_kozlov.png",
+      "specialties": ["Программист", "Связист", "Навигатор"]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{%  block content %}
+<table>
+        <tr>
+        <th>Цвет стен</th>
+        <th>Марсианин</th>
+    </tr>
+<tr>
+{% if sex == 'male' %}
+    {% if age < 21 %}
+        <td class='little_m'></td>  <!-- Голубой -->
+        <td><img src="{{ url_for('static', filename='img/child_marsian.png') }}" alt="Марсианин-ребенок"></td>
+    {% else %}
+        <td class='old_m'></td>  <!-- Темно-синий -->
+        <td><img src="{{ url_for('static', filename='img/adult_marsian.png') }}" alt="Марсианин-взрослый"></td>
+    {% endif %}
+{% else %}
+    {% if age < 21 %}
+        <td class='little_f'></td>  <!-- Светло-розовый -->
+        <td><img src="{{ url_for('static', filename='img/child_marsian.png') }}" alt="Марсианин-ребенок"></td>
+    {% else %}
+        {# Женщина 21 и старше #}
+        <td class='old_f'</td>  <!-- Ярко-розовый -->
+        <td><img src="{{ url_for('static', filename='img/adult_marsian.png') }}" alt="Марсианин-взрослый"></td>
+    {% endif %}
+{% endif %}
+{% endblock %}

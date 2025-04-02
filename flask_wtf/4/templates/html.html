@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block titl %}
+<link rel="stylesheet" href={{ css_url }}>
+<title>{{ data.title }}</title>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h4>Отобор Астрнавтов</h4>
+        <p><strong>Фамилия:</strong> {{ data.surname }}</p>
+        <p><strong>Имя:</strong> {{ data.name }}</p>
+        <p><strong>Образование:</strong> {{ data.education }}</p>
+        <p><strong>Профессия:</strong> {{ data.profession | join(', ') }}</p>
+        <p><strong>Пол:</strong> {{ data.sex }}</p>
+        <p><strong>Мотивация:</strong> {{ data.motivation }}</p>
+        <p><strong>Готовы остаться на Марсе?</strong> {{ "Да" if data.ready else "Нет" }}</p>
+    </div>
+{% endblock %}

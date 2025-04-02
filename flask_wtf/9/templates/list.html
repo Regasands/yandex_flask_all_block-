@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <p>{{ data.first_name }}</p>
+    <p> {{ data.last_name }}</p>
+    <img src=" {{ url_for('static', filename=data.photo) }}">
+    <p>    {% for elem in data.specialties %} {{ elem }} {% endfor %} </p>
+{% endblock %}
+
