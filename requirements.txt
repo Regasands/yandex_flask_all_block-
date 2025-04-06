@@ -2,4 +2,4 @@ flask
 pygame
 pyqt6
 requests
-
+flask_wtf
