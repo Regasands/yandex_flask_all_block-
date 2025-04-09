@@ -10,7 +10,7 @@ from data.db_session import global_init, create_session
 
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 
-from data.marsone import User, Jobs
+from data.marsone import User, Jobs, Department
 
 from werkzeug.security import check_password_hash
 
@@ -184,6 +184,91 @@ def editjob(id_):
         except Exception as e:
             print(e)
     return render_template('addjobs.html', form=form)
+
+@app.route('/del/<int:id_>', methods=['GET', 'POST'])
+def delet(id_):
+    ses = create_session()
+    get_ = ses.query(Jobs).get(id_)
+    if current_user.id == 1 or current_user.id == get_.team_leader:
+        ses.delete(get_)
+        ses.commit()
+    return redirect('/')
+
+
+# Работа с департаментом 
+
+
+class DeparamentForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    members = FieldList(IntegerField('Member ID'), min_entries=1)  
+    email = StringField('Email', validators=[DataRequired()])
+    submit = SubmitField('Отправить')
+
+
+@app.route('/adddep', methods=['POST', 'GET'])
+def adddep():
+    form = DeparamentForm()
+    if form.validate_on_submit():
+        try:
+            ses = create_session()
+            new_dep = Department(title=form.title.data,
+                                members=form.members.data,
+                                email=form.email.data,
+                                chief=current_user.id)
+
+            ses.add(new_dep)
+            ses.commit()
+            return redirect('/departments')
+        except Exception as e:
+            print(e)
+            return redirect('/adddep')
+    return render_template('addjobs.html', form=form)
+
+
+@app.route('/eddep/<int:id_>', methods=['POST', 'GET'])
+def editdep(id_):
+    ses = create_session()
+    get_ = ses.query(Department).get(id_)
+    if get_.chief != current_user.id and current_user.id != 1:
+        return redirect('/departments')
+    
+    get_data = get_.__dict__.copy() 
+    sp = list(get_data.keys())
+    for i in ['chief', 'id']:
+        sp.remove(i)
+
+    dicters = {k: get_data[k] for k in sp}
+    form = DeparamentForm(**dicters)
+    if form.validate_on_submit():
+        try:
+            get_.title = form.title.data
+            get_.members = form.members.data
+            get_.email = form.email.data
+            ses.commit()
+            return redirect('/departments')
+        except Exception as e:
+            print(e)
+    return render_template('addjobs.html', form=form)
+
+
+@app.route('/deldep/<int:id_>', methods=['GET', 'POST'])
+def deletee(id_):
+    ses = create_session()
+    get_ = ses.query(Department).get(id_)
+    if current_user.id == 1 or current_user.id == get_.chief:
+        ses.delete(get_)
+        ses.commit()
+    return redirect('/departments')
+
+
+@app.route('/departments')
+def homedep():
+    ses = create_session()
+    if current_user.is_authenticated:
+        jobs = ses.query(Department).all()
+        return render_template('departmnt.html', jobs=jobs, current_user=current_user)
+    else:
+        return redirect('/login')
 
 
 if __name__ == '__main__':

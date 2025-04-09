@@ -1,4 +1,5 @@
 import sqlalchemy as sa
+import sqlalchemy as chemy
 import sqlalchemy
 from .db_session import SqlAlchemyBase
 from flask_login import UserMixin
@@ -26,6 +27,7 @@ class User(SqlAlchemyBase, UserMixin):
         onupdate=datetime.datetime.now
     )
     jobs = orm.relationship("Jobs", back_populates="user")
+    department = orm.relationship('Department', back_populates='user')
 
 
 class Jobs(SqlAlchemyBase):
@@ -54,3 +56,13 @@ class Jobs(SqlAlchemyBase):
         return {c.name: getattr(self, c.name) for c in self.__tablename__.columns}
 
 
+class Department(SqlAlchemyBase):
+
+    __tablename__ = 'department'
+    id = chemy.Column(chemy.Integer, primary_key=True, autoincrement=True)
+    title = chemy.Column(chemy.String)
+    chief = chemy.Column(chemy.Integer, chemy.ForeignKey('users.id'))
+    members = chemy.Column(chemy.JSON)
+    email = chemy.Column(chemy.String)
+
+    user = orm.relationship("User", back_populates="department")

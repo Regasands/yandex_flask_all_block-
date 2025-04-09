@@ -20,13 +20,14 @@
          {{ elem.job }}
       </div>
       <div class="card-body">
-        <h5 class="card-title">{{ elem.is_finished }}</h5>
-        <p class="card-text">{{ elem.work_size }}</p>
-        <a href="ed/{{ elem.id }}" class="btn btn-primary">edit</a> 
-        <a href="del/{{ elem.id }}" class="btn btn-danger">delete</a>
+        <h5 class="card-title">{{ elem.title}}</h5>
+        <p class="card-text">{{ elem.members}}</p> 
+        <p class="card-text">{{ elem.email}}</p>
+        <a href="eddep/{{ elem.id }}" class="btn btn-primary">edit</a> 
+        <a href="deldep/{{ elem.id }}" class="btn btn-danger">delete</a>
       </div>
     </div>
   {% endfor %}
-  <a href='/addjob', class='btn btn-success'>Add</a>
+  <a href='/adddep', class='btn btn-success'>Add</a>
 </div>
 {% endblock %}
