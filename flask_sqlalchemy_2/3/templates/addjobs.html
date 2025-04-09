@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Добавляем работу</h1>
+    <h1>Добавляем/Обнолвяем работу</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         {% for field in form if field.name != 'csrf_token' %}

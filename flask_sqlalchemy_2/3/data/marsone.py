@@ -47,5 +47,10 @@ class Jobs(SqlAlchemyBase):
         sqlalchemy.Boolean,
         default=False
     )
-
     user = orm.relationship("User", back_populates="jobs")
+
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__tablename__.columns}
+
+

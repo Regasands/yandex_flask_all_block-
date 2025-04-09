@@ -90,7 +90,6 @@ def home():
     else:
         return redirect('/login')
 
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -155,6 +154,35 @@ def addjob():
         except Exception as e:
             print(e)
             return redirect('/addjob')
+    return render_template('addjobs.html', form=form)
+
+
+@app.route('/ed/<int:id_>', methods=['POST', 'GET'])
+def editjob(id_):
+    ses = create_session()
+    get_ = ses.query(Jobs).get(id_)
+    if get_.team_leader != current_user.id and current_user.id != 1:
+        return redirect('/')
+    
+    get_data = get_.__dict__.copy() 
+    sp = list(get_data.keys())
+    for i in ['team_leader', 'id']:
+        sp.remove(i)
+
+    dicters = {k: get_data[k] for k in sp}
+    form = JobForm(**dicters)
+    if form.validate_on_submit():
+        try:
+            get_.job = form.job.data
+            get_.work_size = form.work_size.data
+            get_.collaborators= form.collaborators.data
+            get_.end_date = form.end_date.data
+            get_.start_date = form.start_date.data 
+            get_.is_finished= form.is_finished.data
+            ses.commit()
+            return redirect('/')
+        except Exception as e:
+            print(e)
     return render_template('addjobs.html', form=form)
 
 
