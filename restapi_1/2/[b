@@ -1,0 +1,22 @@
+import requests
+
+url =   'http://127.0.0.1:8080/api/jobs/'
+
+
+print('All')
+all = requests.get(url[:-1]).json()
+print(all)
+
+print('wrong param')
+print(requests.get(url + 'gg').json())
+
+print('get one param')
+print(requests.get(url + '1').json())
+print('wrong id')
+print(requests.get(url + '1290').json())
+
+print('create')
+ids = requests.post(url[:-1]).json()['id']
+print(ids)
+
+
