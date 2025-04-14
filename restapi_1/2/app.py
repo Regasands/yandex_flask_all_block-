@@ -16,7 +16,7 @@ from werkzeug.security import check_password_hash
 
 import datetime
 
-from data import json_api
+from data import json_api, user_api
 
 def create_user_from_form(form):
     # Получаем словарь из формы
@@ -279,4 +279,5 @@ def bad_reuqest(error):
 
 if __name__ == '__main__':
     app.register_blueprint(json_api.blueprint)
+    app.register_blueprint(user_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
