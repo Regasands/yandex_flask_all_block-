@@ -60,10 +60,10 @@ def create_jobs():
         ses.commit()
         return jsonify({'id': new_job.id})
     except Exception as e:
-        return make_response(jsonify({'error': str(e)}), 405)
+        return make_response(jsonify({'error': str(e)}), 500)
 
 
-@blueprint.route('/app/jobs/<int:job_id>', methods=['DELETE'])
+@blueprint.route('/api/jobs/<int:job_id>', methods=['DELETE'])
 def delete_jobs(job_id):
     ses = db_session.create_session()
     try:
@@ -75,26 +75,35 @@ def delete_jobs(job_id):
         return jsonify({'success': 'ok'})
     except Exception as e:
         return make_response(jsonify({'error': str(e)}), 400)
+    
 
-
-@blueprint.route('/app/jobs/<int:job_id>', methods=['PUT'])
+@blueprint.route('/api/jobs/<int:job_id>', methods=['PUT'])
 def put_jobs(job_id):
     try:
+        if not request.json:
+            return make_response(jsonify({'error': 'need data'}), 400) 
+        sp =  ['job', 'work_size', 'team_leader', 'collaborators', 'start_date', 'end_date', 'is_finished']
         ses = db_session.create_session()
         job =  ses.query(Jobs).get(job_id)
         if job is None:
             return make_response(jsonify({'error': 'pls send corret id'}), 400)
+        elif not all(key in request.json for key in sp):
+            return make_response(jsonify({'errors': 'neeed_moredata'}), 400)
 
-        job.team_leader=request.json['team_leader'],
-        job.job=request.json['job'],
-        job.work_size=request.json['work_size'],
-        job.collaborators=request.json['collaborators'],
-        job.start_date=datetime.fromisoformat(request.json['start_date']),  # Конвертация строки в datetime
-        job.end_date=datetime.fromisoformat(request.json['end_date']),
+
+        job.team_leader=request.json['team_leader']
+        job.job=request.json['job']
+        job.work_size=request.json['work_size']
+        job.collaborators=request.json['collaborators']
+        job.start_date=datetime.fromisoformat(request.json['start_date'])  # Конвертация строки в datetime
+        job.end_date=datetime.fromisoformat(request.json['end_date'])
         job.is_finished=request.json['is_finished']
+        ses.commit()
+
+        return jsonify({"sec": f'{job.id}'})
 
     except Exception as e:
-        return make_response(jsonify({'error': str(e)}), 405)
+        return make_response(jsonify({'error': str(e)}), 500)
 
 
 

@@ -58,26 +58,30 @@ def test_api():
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
-    # Тест 8 редакитирование  работы корректное
+    print('\n EDIT CORRECT')
+       # Тест 8 редакитирование  работы корректное
     job_data = {
         "job": " Удалите документацию",
         "work_size": 290,  # Теперь передаём строку
         "team_leader": 42,
-        "collaborators": "3",
+        "collaborators": 3,
         "start_date": "2025-04-12",
         "end_date": "2025-04-13",
         "is_finished": True
     }
     response = requests.put(BASE_URL + '/8', json=job_data)
+    print(response.text)
     print(f'Status: {response.status_code}')
     pprint(response.json())
-
+    
+    
+    print('\n  NO EDIT CORRECT error data')
     # Тест 9 редакитирование  работы не корректное ошибка в запросе 
     job_data = {
         "job": " Удалите документацию",
         "work_size": 290,  # Теперь передаём строку
         "team_leader": 42,
-        "collaborators": "3",
+        "collaborators": ['2'],
         "start_date": "2025-04-12",
         "end_date": "2025-04-13",
         "is_finished": 'True' # Передае строку 
@@ -86,12 +90,15 @@ def test_api():
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
+
+
+    print('\n  NO EDIT CORRECT error id')
     # Тест 10 редакитирование  работы  не корректное не верный id
     job_data = {
         "job": " Удалите документацию",
         "work_size": 290,  # Теперь передаём строку
         "team_leader": 42,
-        "collaborators": "3",
+        "collaborators": ['2'],
         "start_date": "2025-04-12",
         "end_date": "2025-04-13",
         "is_finished": True
@@ -99,6 +106,21 @@ def test_api():
     response = requests.put(BASE_URL + '/322323', json=job_data)
     print(f'Status: {response.status_code}')
     pprint(response.json())
+
+    # тест 11 удаление верноеное
+    print('\n DELETE ')
+    response = requests.delete(BASE_URL + '/8', json=job_data)
+    print(f'Status: {response.status_code}')
+    pprint(response.json())
+
+    
+    # тест 11 удаление  не верноеное ошибка в id 
+
+    print('\n ERROR DELETE ')
+    response = requests.delete(BASE_URL + '/88989898989', json=job_data)
+    print(f'Status: {response.status_code}')
+    pprint(response.json())
+
 
 
 if __name__ == '__main__':
