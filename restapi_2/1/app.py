@@ -1,5 +1,6 @@
 from flask_restful import Api
 from data.user_resource import UsersListResource, UsersResource
+from data.jobs_resource import JobsListResource, JobsResource
 from data.db_session import global_init
 from flask import Flask, jsonify, render_template, redirect, make_response
 
@@ -26,7 +27,8 @@ app = Flask(__name__)
 api = Api(app)
 api.add_resource(UsersResource, '/api/v2/users/<int:user_id>')
 api.add_resource(UsersListResource, '/api/v2/users')
-
+api.add_resource(JobsResource, '/api/v2/jobs/<int:jobs_id>')
+api.add_resource(JobsListResource, '/api/v2/jobs')
 
 
 

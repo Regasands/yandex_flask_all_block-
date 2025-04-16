@@ -25,4 +25,16 @@ class UserParser:
         
         return parser
 
-
+class JobsParser:
+    @staticmethod
+    def get_all_arg():
+        parser = reqparse.RequestParser()
+        job_parser = reqparse.RequestParser()
+        job_parser.add_argument('team_leader', type=int, required=True, help='Team leader ID is required and must be an integer')
+        job_parser.add_argument('job', type=str, required=True, help='Job description is required')
+        job_parser.add_argument('work_size', type=int, required=True, help='Work size is required and must be an integer')
+        job_parser.add_argument('collaborators', type=list, location='json', required=False, help='Collaborators should be a list of user IDs')
+        job_parser.add_argument('start_date', type=str, required=False, help='Start date should be a string in ISO format')
+        job_parser.add_argument('end_date', type=str, required=False, help='End date should be a string in ISO format')
+        job_parser.add_argument('is_finished', type=bool, required=False, help='is_finished should be a boolean')
+        return parser  

@@ -13,8 +13,8 @@ def test_users_api():
     pprint(response.json())
 
     # Тест 2: Получение одного пользователя (существующего)
-    print('\n=== GET USER 1 ===')
-    response = requests.get(f'{BASE_URL}/1')
+    print('\n=== GET USER 2 ===')
+    response = requests.get(f'{BASE_URL}/2')
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
@@ -25,7 +25,7 @@ def test_users_api():
     pprint(response.json())
 
     # Тест 4: Редактирование пользователя
-    print('\n=== UPDATE USER 1 ===')
+    print('\n=== UPDATE USER 2 ===')
     user_data = {
         'surname': 'Иванов',
         'name': 'Иван',
@@ -36,7 +36,7 @@ def test_users_api():
         'email': 'ivanov@example.com',
         'hashed_password': 'securepassword'
     }
-    response = requests.put(f'{BASE_URL}/1', json=user_data)
+    response = requests.put(f'{BASE_URL}/2', json=user_data)
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
@@ -47,8 +47,8 @@ def test_users_api():
     pprint(response.json())
 
     # Тест 6: Удаление пользователя
-    print('\n=== DELETE USER 1 ===')
-    response = requests.delete(f'{BASE_URL}/1')
+    print('\n=== DELETE USER 2 ===')
+    response = requests.delete(f'{BASE_URL}/11')
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
@@ -58,6 +58,34 @@ def test_users_api():
     print(f'Status: {response.status_code}')
     pprint(response.json())
 
+    # Тест 8: Добавление нового пользователя
+    print('\n=== CREATE NEW USER ===')
+    new_user_data = {
+        'surname': 'Петров',
+        'name': 'Петр',
+        'age': 28,
+        'position': 'Менеджер',
+        'speciality': 'Product Manager',
+        'address': 'Санкт-Петербург',
+        'email': 'petrov@example.com',
+        'hashed_password': 'newpassword123'
+    }
+    response = requests.post(BASE_URL, json=new_user_data)
+    print(f'Status: {response.status_code}')
+    pprint(response.json())
+
+    # Тест 9: Удаление только что добавленного пользователя
+    print('\n=== DELETE NEWLY CREATED USER ===')
+    # Получаем id добавленного пользователя (в случае успеха)
+    new_user_id = response.json().get('id')
+    if new_user_id:
+        response = requests.delete(f'{BASE_URL}/{new_user_id}')
+        print(f'Status: {response.status_code}')
+        pprint(response.json())
+    else:
+        print("Ошибка: Не удалось получить ID нового пользователя.")
+
 
 if __name__ == '__main__':
     test_users_api()
+
