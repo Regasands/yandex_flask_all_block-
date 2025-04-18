@@ -4,3 +4,6 @@ pyqt6
 requests
 flask_wtf
 SQLAlchemy-serializer
+flaks_login
+sqlalchemy
+flask-restful
