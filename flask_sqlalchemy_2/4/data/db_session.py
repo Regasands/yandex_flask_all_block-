@@ -1,30 +1,24 @@
 import sqlalchemy as sa
-import sqlalchemy.orm  as orm
-from sqlalchemy.orm import Session
-
-
-SqlAlchemyBase = orm.declarative_base()
+from sqlalchemy.orm import sessionmaker
+from .marsone import SqlAlchemyBase
 
 __factory = None
 
-
-def global_init(db_file):
+def global_init(db_path):
     global __factory
+
     if __factory:
         return
-    if not db_file or not db_file.strip():
-        raise Exception('Need cohose file')
 
-    conn_str = f'sqlite:///{db_file.strip()}?check_same_thread=False'
-    print('Connect',  conn_str)
+    connection_str = f'sqlite:///{db_path}?check_same_thread=False'
+    print(f"Connecting {connection_str}")
 
-    engine = sa.create_engine(conn_str, echo=False)
-    __factory = orm.sessionmaker(bind=engine)
-    from . import __all_models
+    engine = sa.create_engine(connection_str, echo=False)
+    __factory = sessionmaker(bind=engine)
+
     SqlAlchemyBase.metadata.create_all(engine)
 
-
-
-def create_session() -> Session:
+def create_session():
     global __factory
     return __factory()
+

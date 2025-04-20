@@ -25,6 +25,10 @@
         <p class="card-text">{% for elem2 in elem.cat %} {{ elem2.name_int }} {% endfor %}</p>
         <a href="ed/{{ elem.id }}" class="btn btn-primary">edit</a> 
         <a href="del/{{ elem.id }}" class="btn btn-danger">delete</a>
+            {% for category in elem.categories %}
+          <p>{{ category.name }}</p>
+        {% endfor %}
+
       </div>
     </div>
   {% endfor %}
